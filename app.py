@@ -15,12 +15,18 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+import news_spider
 from models import News
 
 
 @app.shell_context_processor
 def make_shell_context():
     return {"db": db, "News": News}
+
+
+@app.cli.command()
+def scrape():
+    news_spider.run_spider()
 
 
 @app.route("/news")
